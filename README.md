@@ -18,17 +18,18 @@ Portfolio-grade multi-agent research assistant for company due diligence. The sy
 ## Architecture
 ```mermaid
 flowchart TD
-    A[/POST research/] --> B[PlannerAgent]
-    B --> C[SearchAgent]
-    C -->|few sources| D[Retry Planner (max 1)]
-    D --> C
-    C --> E[FetchAndCleanAgent]
-    E --> F[MemoryRetrieveAgent]
-    F --> G[AnalystAgent]
-    G --> H[ReportWriterAgent]
-    H --> I[MemoryUpdateAgent]
-    I --> J[(FAISS Index)]
-    H --> K[/JSON Response/]
+    A["POST /research"] --> B["PlannerAgent"]
+    B --> C["SearchAgent"]
+    C --> D{"Enough sources?"}
+    D -- "No (retry once)" --> E["Retry Planner"]
+    E --> C
+    D -- "Yes" --> F["FetchAndCleanAgent"]
+    F --> G["MemoryRetrieveAgent"]
+    G --> H["AnalystAgent"]
+    H --> I["ReportWriterAgent"]
+    I --> J["MemoryUpdateAgent"]
+    J --> K[("FAISS Index")]
+    I --> L["JSON Response"]
 ```
 
 ## Repository Structure
